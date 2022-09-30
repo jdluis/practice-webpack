@@ -2,25 +2,25 @@ const path = require("path"); //modulo requerido
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-const Dotenv = require ('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   entry: "./src/index.js", //punto de entrada donde comenzara a generar
   output: {
     path: path.resolve(__dirname, "dist"), //ruta, normalmente dist
     filename: "[name].[contenthash].js", //nombre del archivo ya desplegado con webpack
-    assetModuleFilename: 'assets/images/[hash][ext][query]' //con ello marcamos el poutput
+    assetModuleFilename: "assets/images/[hash][ext][query]", //con ello marcamos el poutput
   },
-  mode: 'development',
+  mode: "development",
   watch: true,
   resolve: {
     extensions: [".js"], //son las extensiones que usara webpack
     alias: {
-      '@utils': path.resolve(__dirname, 'src/utils/'), //de esta manera creamos un alias de utils
-      '@templates': path.resolve(__dirname, 'src/templates/'),
-      '@styles': path.resolve(__dirname, 'src/styles/'),
-      '@images': path.resolve(__dirname, 'src/assets/images/'),
-    }
+      "@utils": path.resolve(__dirname, "src/utils/"), //de esta manera creamos un alias de utils
+      "@templates": path.resolve(__dirname, "src/templates/"),
+      "@styles": path.resolve(__dirname, "src/styles/"),
+      "@images": path.resolve(__dirname, "src/assets/images/"),
+    },
   },
   module: {
     rules: [
@@ -51,9 +51,9 @@ module.exports = {
             limit: 10000,
             minetype: "application/font-woff",
             name: "[name].[contenthash].[ext]", //[contenthash] se añade por la optimizacion
-            outputPath: './assets/fonts',
-            publicPath: '../assets/fonts/',
-            esModule: false
+            outputPath: "./assets/fonts",
+            publicPath: "../assets/fonts/",
+            esModule: false,
           },
         },
       },
@@ -66,7 +66,7 @@ module.exports = {
       filename: "./index.html", //no definimos con el nombre que queramos, por default index.js
     }),
     new MiniCssExtractPlugin({
-      filename: 'assets/[name].[contenthash].css' //para optimizar
+      filename: "assets/[name].[contenthash].css", //para optimizar
     }),
     new MiniCssExtractPlugin(),
     new CopyPlugin({
@@ -77,6 +77,14 @@ module.exports = {
         },
       ],
     }),
-    new Dotenv()
+    new Dotenv(),
   ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
+    compress: true,
+    historyApiFallback: true, //añade un historial para fallos etc..
+    port: 3021, //Podemos elegir el que queramos
+  },
 };
